@@ -5,7 +5,7 @@ pipeline {
         AWS_ACCOUNT_ID = credentials('ACCOUNT_ID')
         AWS_DEFAULT_REGION = 'us-east-1'
         REPO_PREFIX = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/"
-        GIT_REPO="Multiple-Microservices-Deployment"
+        GIT_REPO="DACN"
     }
     stages {
         stage("Cleaning Workspace") {
@@ -15,7 +15,7 @@ pipeline {
         }
         stage("Checkout from git") {
             steps {
-                git credentialsId: 'github', url: 'https://github.com/SohamV1/Multiple-Microservices-Deployment.git'
+                git credentialsId: 'github', url: 'https://github.com/21522149/DACN.git'
             }
         }
         stage("Sonarqube Analysis") {
@@ -23,16 +23,12 @@ pipeline {
                 dir('src'){
                     withSonarQubeEnv('sonar-server') {
                         sh ''' 
-                            ${SCANNER_HOME}/bin/sonar-scanner \
-                            -Dsonar.projectKey=Multiple-Microservices-Deployment  \
-                            -Dsonar.sources=. \
-                            -Dsonar.host.url=http://localhost:9000 \
-                            -Dsonar.exclusions=**/*.java 
+                           sonar-scanner.bat -D"sonar.projectKey=Multi-microservice-deployment" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9000" -D"sonar.token=squ_e42bdcfe7ed16035528bae376849cd55b1cbd183"
                         '''
                     }
                 }
             }
-        }
+        }~
         stage('Quality Check') {
             steps {
                 script {

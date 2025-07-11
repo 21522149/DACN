@@ -31,7 +31,7 @@ foreach ($dir in $directories) {
     }
 
     $image = "${REPO_PREFIX}${svcname}:${TAG}"
-    Write-Host "Updating image for $svcname: $image"
+    Write-Host "Updating image for ${svcname}: ${image}"
 
     $manifestFile = Join-Path $manifestsPath "${svcname}.yaml"
 

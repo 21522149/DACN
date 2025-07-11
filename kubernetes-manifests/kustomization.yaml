@@ -11,9 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+
+namespace: dev  
+
 resources:
  - adservice.yaml
  - cartservice.yaml
@@ -21,12 +23,13 @@ resources:
  - currencyservice.yaml
  - emailservice.yaml
  - frontend.yaml
-# - loadgenerator.yaml # During development, the loadgenerator module inside skaffold.yaml will be used.
+# - loadgenerator.yaml
  - paymentservice.yaml
  - productcatalogservice.yaml
  - recommendationservice.yaml
  - redis.yaml
  - shippingservice.yaml
+
 # components:
 # - ../kustomize/components/cymbal-branding
 # - ../kustomize/components/google-cloud-operations

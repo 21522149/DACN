@@ -1,21 +1,8 @@
-# Copyright 2018 Google LLC
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#      http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
+  namespace: dev
 spec:
   selector:
     matchLabels:
@@ -42,7 +29,7 @@ spec:
                 - ALL
             privileged: false
             readOnlyRootFilesystem: true
-          image: 407622020962.dkr.ecr.us-east-1.amazonaws.com/frontend:115
+          image: 886436953878.dkr.ecr.ap-southeast-2.amazonaws.com/frontend:35
           ports:
           - containerPort: 8080
           readinessProbe:
@@ -78,16 +65,8 @@ spec:
             value: "checkoutservice:5050"
           - name: AD_SERVICE_ADDR
             value: "adservice:9555"
-          # # ENV_PLATFORM: One of: local, gcp, aws, azure, onprem, alibaba
-          # # When not set, defaults to "local" unless running in GKE, otherwies auto-sets to gcp
-          # - name: ENV_PLATFORM
-          #   value: "aws"
           - name: ENABLE_PROFILER
             value: "0"
-          # - name: CYMBAL_BRANDING
-          #   value: "true"
-          # - name: FRONTEND_MESSAGE
-          #   value: "Replace this with a message you want to display on all pages."
           resources:
             requests:
               cpu: 100m
@@ -100,6 +79,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: frontend
+  namespace: dev
 spec:
   type: ClusterIP
   selector:
@@ -113,6 +93,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: frontend-external
+  namespace: dev
 spec:
   type: LoadBalancer
   selector:

@@ -1,4 +1,3 @@
-# make-docker.ps1
 $ErrorActionPreference = "Stop"
 
 $SCRIPTDIR = Split-Path -Parent $MyInvocation.MyCommand.Definition
@@ -6,10 +5,15 @@ Write-Host "Script directory: $SCRIPTDIR"
 
 $TAG = $env:BUILD_NUMBER
 $AWS_DEFAULT_REGION = $env:AWS_DEFAULT_REGION
-$REPO_PREFIX = $env:REPO_PREFIX
+$REPO_PREFIX = $env:REPO_PREFIX.TrimEnd("/")  # Trim dấu '/' nếu có
 
 Write-Host "Tag: $TAG"
 Write-Host "Repo Prefix: $REPO_PREFIX"
+
+$REGISTRY_URI = $REPO_PREFIX  # alias cho dễ nhìn
+
+# Login một lần duy nhất (quan trọng!)
+aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REGISTRY_URI
 
 $srcPath = Join-Path $SCRIPTDIR "..\src"
 $directories = Get-ChildItem -Path $srcPath -Directory
@@ -32,10 +36,9 @@ foreach ($dir in $directories) {
     docker system prune -f
     docker container prune -f
 
-    $image = "${REPO_PREFIX}/${svcname}:${TAG}"
+    #Đường image đầy đủ: <registry>/<servicename>:<tag>
+    $image = "$REGISTRY_URI/$svcname:$TAG"
     Write-Host "Building and pushing: $image"
-
-    aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPO_PREFIX
 
     docker build -t "$svcname" .
     docker tag "$svcname" "$image"

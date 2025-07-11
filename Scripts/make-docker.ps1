@@ -37,7 +37,7 @@ foreach ($dir in $directories) {
     docker container prune -f
 
     #Đường image đầy đủ: <registry>/<servicename>:<tag>
-    $image = "$REGISTRY_URI/$svcname:$TAG"
+    $image = "${REGISTRY_URI}/${svcname}:${TAG}"
     Write-Host "Building and pushing: $image"
 
     docker build -t "$svcname" .

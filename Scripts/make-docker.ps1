@@ -32,7 +32,7 @@ foreach ($dir in $directories) {
     docker system prune -f
     docker container prune -f
 
-    $image = "${REPO_PREFIX}${svcname}:${TAG}"
+    $image = "${REPO_PREFIX}/${svcname}:${TAG}"
     Write-Host "Building and pushing: $image"
 
     aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPO_PREFIX

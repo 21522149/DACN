@@ -24,7 +24,7 @@ function Edit-K8s {
             return
         }
 
-        $image = "$REPO_PREFIX$svcname:$TAG"
+        $image = "${REPO_PREFIX}/${svcname}:${TAG}"
         Write-Host "Updating image: $image"
 
         $yamlFile = Join-Path $manifestPath "$svcname.yaml"

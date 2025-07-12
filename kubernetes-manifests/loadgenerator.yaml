@@ -48,7 +48,7 @@ spec:
             readOnlyRootFilesystem: true
       containers:
         - name: main
-          image: 886436953878.dkr.ecr.ap-southeast-2.amazonaws.com/loadgenerator:35
+          image: loadgenerator:54
           env:
             - name: FRONTEND_ADDR
               value: "frontend:80"
